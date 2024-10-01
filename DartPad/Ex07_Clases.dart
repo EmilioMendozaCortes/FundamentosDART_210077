@@ -22,6 +22,7 @@ void main() {
   print(brotherhood.toString());
 }
 
+// Constructor posicional
 class Hero {
   String name;
   String power;
@@ -30,6 +31,7 @@ class Hero {
       power = pPower;
 }
 
+// Constructor NoPosicional
 class Team {
   String Name;
   String Type;
