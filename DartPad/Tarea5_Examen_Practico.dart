@@ -26,7 +26,7 @@ abstract class Persona {
     this.updatedAt
   }) : createdAt = createdAt ?? DateTime.now();
 
-  void cancelaSuscripcion(); // Método abstracto a sobrescribir en las clases derivadas
+  void cancelaSuscripcion(); // Método abstracto
 
   @override  
   String toString() {
@@ -54,7 +54,7 @@ class Miembro extends Persona {
   String NSS;
   String tipoSeguro;
   String estatusVida;
-  String fueTrabajador; // corregido
+  String fueTrabajador; 
   String estatusMedico;
   DateTime fechaRegistro;
   DateTime? fechaUltimaCita;
@@ -63,7 +63,7 @@ class Miembro extends Persona {
     required this.NSS,
     required this.tipoSeguro,
     required this.estatusVida,
-    required this.fueTrabajador, // corregido
+    required this.fueTrabajador, 
     required this.estatusMedico,
     required this.fechaRegistro,
     this.fechaUltimaCita,
@@ -91,6 +91,71 @@ class Miembro extends Persona {
     createdAt: createdAt,
     updatedAt: updatedAt
   );
+
+  // Método para limpiar todos los datos (simulación de eliminación)
+  void limpiaDatos() {
+    ID = 0;
+    cortesyTitle = null;
+    name = "";
+    firstLastName = "";
+    secondLastName = null;
+    gender = "";
+    bloodGroup = "";
+    birthdate = DateTime(1900, 01, 01); 
+    isActive = false;
+    fechaUltimaCita = null;
+    NSS = "";
+    tipoSeguro = "";
+    estatusVida = "";
+    fueTrabajador = "";
+    estatusMedico = "";
+    fechaRegistro = DateTime(1900, 01, 01); 
+    print("Todos los datos del miembro han sido eliminados.");
+  }
+
+  // Método para actualizar todos los datos
+  void actualizaDatos({
+    required int nuevoID,
+    String? nuevaCortesyTitle,
+    required String nuevoName,
+    required String nuevoFirstLastName,
+    String? nuevoSecondLastName,
+    required String nuevoGender,
+    required String nuevoBloodGroup,
+    required DateTime nuevoBirthdate,
+    required bool nuevoIsActive,
+    required DateTime nuevoFechaRegistro,
+    DateTime? nuevaFechaUltimaCita,
+    required String nuevoNSS,
+    required String nuevoTipoSeguro,
+    required String nuevoEstatusVida,
+    required String nuevoFueTrabajador,
+    required String nuevoEstatusMedico
+  }) {
+    ID = nuevoID;
+    cortesyTitle = nuevaCortesyTitle;
+    name = nuevoName;
+    firstLastName = nuevoFirstLastName;
+    secondLastName = nuevoSecondLastName;
+    gender = nuevoGender;
+    bloodGroup = nuevoBloodGroup;
+    birthdate = nuevoBirthdate;
+    isActive = nuevoIsActive;
+    NSS = nuevoNSS;
+    tipoSeguro = nuevoTipoSeguro;
+    estatusVida = nuevoEstatusVida;
+    fueTrabajador = nuevoFueTrabajador;
+    estatusMedico = nuevoEstatusMedico;
+    fechaRegistro = nuevoFechaRegistro;
+    fechaUltimaCita = nuevaFechaUltimaCita;
+    print("Todos los datos del miembro han sido actualizados.");
+  }
+
+  @override
+  void cancelaSuscripcion() {
+    isActive = false;
+    print("Suscripción cancelada para el miembro $name $firstLastName.");
+  }
 
   @override
   String toString() {
@@ -123,71 +188,91 @@ class Miembro extends Persona {
     ------------------------------------------------------------
     """;
   }
-
-  @override
-  void cancelaSuscripcion() {
-    isActive = false;
-    print("Suscripción cancelada para el miembro $name $firstLastName.");
-  }
 }
 
 void main() {
-    // Casos de prueba 1
-    print("CASO DE PRUEBA 1");
-    final nuevoMiembro = Miembro(
-        NSS: "123456789",
-        tipoSeguro: "IMSS",
-        estatusVida: "Vivo",
-        fueTrabajador: "No", // corregido
-        estatusMedico: "Sano",
-        fechaRegistro: DateTime.now(),
-        ID: 1,
-        name: "Carlos",
-        firstLastName: "García",
-        secondLastName: "López",
-        gender: "Hombre",
-        bloodGroup: "A+",
-        birthdate: DateTime(1990, 05, 12)
-    );
-    print(nuevoMiembro);
-    
-    // Casos de prueba 2
-    print("CASO DE PRUEBA 2");
-    final trabajador = Miembro(
-        NSS: "987654321",
-        tipoSeguro: "ISSSTE",
-        estatusVida: "Retirado",
-        fueTrabajador: "Fue trabajador", // corregido
-        estatusMedico: "Sano",
-        fechaRegistro: DateTime(2020, 07, 15),
-        fechaUltimaCita: DateTime(2023, 10, 05),
-        ID: 2,
-        name: "Ana",
-        firstLastName: "Martínez",
-        secondLastName: "Sánchez",
-        gender: "Mujer",
-        bloodGroup: "O-",
-        birthdate: DateTime(1975, 03, 10)
-    );
-    print(trabajador);
-    
-    // Casos de prueba 3
-    print("CASO DE PRUEBA 3");
-    final miembro = Miembro(
-        NSS: "1122334455",
-        tipoSeguro: "Privado",
-        estatusVida: "Vivo",
-        fueTrabajador: "No", // corregido
-        estatusMedico: "Enfermo",
-        fechaRegistro: DateTime(2021, 01, 22),
-        ID: 3,
-        name: "Roberto",
-        firstLastName: "Hernández",
-        secondLastName: "Pérez",
-        gender: "Hombre",
-        bloodGroup: "B+",
-        birthdate: DateTime(1985, 11, 05)
-    );
-    miembro.cancelaSuscripcion();
-    print(miembro);
+  // Casos de prueba 1
+  print("CASO DE PRUEBA 1");
+  final nuevoMiembro = Miembro(
+      NSS: "123456789",
+      tipoSeguro: "IMSS",
+      estatusVida: "Vivo",
+      fueTrabajador: "No", 
+      estatusMedico: "Sano",
+      fechaRegistro: DateTime.now(),
+      ID: 1,
+      name: "Carlos",
+      firstLastName: "García",
+      secondLastName: "López",
+      gender: "Hombre",
+      bloodGroup: "A+",
+      birthdate: DateTime(1990, 05, 12)
+  );
+  print(nuevoMiembro);
+  
+  // Casos de prueba 2
+  print("CASO DE PRUEBA 2");
+  final trabajador = Miembro(
+      NSS: "987654321",
+      tipoSeguro: "ISSSTE",
+      estatusVida: "Retirado",
+      fueTrabajador: "Fue trabajador", 
+      estatusMedico: "Sano",
+      fechaRegistro: DateTime(2020, 07, 15),
+      fechaUltimaCita: DateTime(2023, 10, 05),
+      ID: 2,
+      name: "Ana",
+      firstLastName: "Martínez",
+      secondLastName: "Sánchez",
+      gender: "Mujer",
+      bloodGroup: "O-",
+      birthdate: DateTime(1975, 03, 10)
+  );
+  print(trabajador);
+
+  // Casos de prueba 3
+  print("CASO DE PRUEBA 3 - Inicial");
+  final miembro = Miembro(
+      NSS: "1122334455",
+      tipoSeguro: "Privado",
+      estatusVida: "Vivo",
+      fueTrabajador: "No",
+      estatusMedico: "Enfermo",
+      fechaRegistro: DateTime(2021, 01, 22),
+      ID: 3,
+      name: "Roberto",
+      firstLastName: "Hernández",
+      secondLastName: "Pérez",
+      gender: "Hombre",
+      bloodGroup: "B+",
+      birthdate: DateTime(1985, 11, 05)
+  );
+  print(miembro);
+
+  // Actualización de datos
+  print("\nCASO DE PRUEBA 3 - Actualización");
+  miembro.actualizaDatos(
+    nuevoID: 3,
+    nuevaCortesyTitle: "Sr.",
+    nuevoName: "Maria",
+    nuevoFirstLastName: "Hernández",
+    nuevoSecondLastName: "Pérez",
+    nuevoGender: "Mujer",
+    nuevoBloodGroup: "A+",
+    nuevoBirthdate: DateTime(1985, 12, 05),
+    nuevoIsActive: true,
+    nuevoFechaRegistro: DateTime(2021, 01, 22),
+    nuevaFechaUltimaCita: DateTime(2024, 10, 12),
+    nuevoNSS: "9988776655",
+    nuevoTipoSeguro: "IMSS",
+    nuevoEstatusVida: "Vivo",
+    nuevoFueTrabajador: "No",
+    nuevoEstatusMedico: "Sano"
+  );
+  print(miembro);
+
+  // Limpieza de datos (eliminar)
+  print("\nCASO DE PRUEBA 3 - Limpieza");
+  miembro.limpiaDatos();
+  print(miembro);
 }
