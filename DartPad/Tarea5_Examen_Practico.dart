@@ -1,4 +1,5 @@
-// Clase de persona
+enum MiembroStatus { activo, inactivo }
+
 abstract class Persona {
   int ID;
   String? cortesyTitle;
@@ -26,30 +27,26 @@ abstract class Persona {
     this.updatedAt
   }) : createdAt = createdAt ?? DateTime.now();
 
-  void cancelaSuscripcion(); // Método abstracto
+  void cancelaSuscripcion();
+
+  void actualizaDatos(Map<String, dynamic> nuevosDatos); // Método abstracto para actualizar datos
 
   @override  
   String toString() {
     final String formatedBirtDate = "${birthdate.day.toString().padLeft(2, '0')}/${birthdate.month.toString().padLeft(2, '0')}/${birthdate.year}";
     final String formatedCreatedDate = "${createdAt.day.toString().padLeft(2, '0')}/${createdAt.month.toString().padLeft(2, '0')}/${createdAt.year} ${createdAt.hour.toString().padLeft(2, '0')}:${createdAt.minute.toString().padLeft(2, '0')}:${createdAt.second.toString().padLeft(2, '0')}";
 
-    return """
-    ------------------------------------------------------------
-    DATOS DE LA PERSONA
-    ------------------------------------------------------------
-    ID: $ID
+    return """ID: $ID
     Nombre: $name $firstLastName ${secondLastName ?? ''}
+    Título de Cortesía: ${cortesyTitle ?? 'N/A'}
     Género: $gender
     Grupo Sanguíneo: $bloodGroup
     Fecha de Nacimiento: $formatedBirtDate
     Estatus: ${isActive ? "Activo" : "Inactivo"}
-    Fecha de Registro: $formatedCreatedDate
-    ------------------------------------------------------------
-    """;
+    Fecha de Registro: $formatedCreatedDate""";
   }
 }
 
-// Clase de miembro extendida de persona
 class Miembro extends Persona {
   String NSS;
   String tipoSeguro;
@@ -92,145 +89,118 @@ class Miembro extends Persona {
     updatedAt: updatedAt
   );
 
-  // Método para limpiar todos los datos (simulación de eliminación)
-  void limpiaDatos() {
-    ID = 0;
-    cortesyTitle = null;
-    name = "";
-    firstLastName = "";
-    secondLastName = null;
-    gender = "";
-    bloodGroup = "";
-    birthdate = DateTime(1900, 01, 01); 
-    isActive = false;
-    fechaUltimaCita = null;
-    NSS = "";
-    tipoSeguro = "";
-    estatusVida = "";
-    fueTrabajador = "";
-    estatusMedico = "";
-    fechaRegistro = DateTime(1900, 01, 01); 
-    print("Todos los datos del miembro han sido eliminados.");
-  }
-
-  // Método para actualizar todos los datos
-  void actualizaDatos({
-    required int nuevoID,
-    String? nuevaCortesyTitle,
-    required String nuevoName,
-    required String nuevoFirstLastName,
-    String? nuevoSecondLastName,
-    required String nuevoGender,
-    required String nuevoBloodGroup,
-    required DateTime nuevoBirthdate,
-    required bool nuevoIsActive,
-    required DateTime nuevoFechaRegistro,
-    DateTime? nuevaFechaUltimaCita,
-    required String nuevoNSS,
-    required String nuevoTipoSeguro,
-    required String nuevoEstatusVida,
-    required String nuevoFueTrabajador,
-    required String nuevoEstatusMedico
-  }) {
-    ID = nuevoID;
-    cortesyTitle = nuevaCortesyTitle;
-    name = nuevoName;
-    firstLastName = nuevoFirstLastName;
-    secondLastName = nuevoSecondLastName;
-    gender = nuevoGender;
-    bloodGroup = nuevoBloodGroup;
-    birthdate = nuevoBirthdate;
-    isActive = nuevoIsActive;
-    NSS = nuevoNSS;
-    tipoSeguro = nuevoTipoSeguro;
-    estatusVida = nuevoEstatusVida;
-    fueTrabajador = nuevoFueTrabajador;
-    estatusMedico = nuevoEstatusMedico;
-    fechaRegistro = nuevoFechaRegistro;
-    fechaUltimaCita = nuevaFechaUltimaCita;
-    print("Todos los datos del miembro han sido actualizados.");
-  }
-
   @override
   void cancelaSuscripcion() {
     isActive = false;
     print("Suscripción cancelada para el miembro $name $firstLastName.");
   }
 
-  @override
-  String toString() {
-    final String formatedBirthDate = "${birthdate.day.toString().padLeft(2, '0')}/${birthdate.month.toString().padLeft(2, '0')}/${birthdate.year}";
-    final String formatedCreatedDate = "${createdAt.day.toString().padLeft(2, '0')}/${createdAt.month.toString().padLeft(2, '0')}/${createdAt.year} ${createdAt.hour.toString().padLeft(2, '0')}:${createdAt.minute.toString().padLeft(2, '0')}:${createdAt.second.toString().padLeft(2, '0')}";
-    final String formatedFechaRegistro = "${fechaRegistro.day.toString().padLeft(2, '0')}/${fechaRegistro.month.toString().padLeft(2, '0')}/${fechaRegistro.year}";
+  // Método para limpiar todos los datos
+  void limpiaDatos() {
+    ID = 0;
+    cortesyTitle = null;
+    name = '';
+    firstLastName = '';
+    secondLastName = null;
+    gender = '';
+    bloodGroup = '';
+    birthdate = DateTime.now();
+    isActive = false;
+    NSS = '';
+    tipoSeguro = '';
+    estatusVida = '';
+    fueTrabajador = '';
+    estatusMedico = '';
+    fechaRegistro = DateTime.now();
+    fechaUltimaCita = null;
+    print("Todos los datos del miembro han sido eliminados.");
+  }
 
-    String formatedFechaUltimaCita = fechaUltimaCita != null
+  @override
+  void actualizaDatos(Map<String, dynamic> nuevosDatos) {
+    if (nuevosDatos.containsKey('cortesyTitle')) cortesyTitle = nuevosDatos['cortesyTitle'];
+    if (nuevosDatos.containsKey('name')) name = nuevosDatos['name'];
+    if (nuevosDatos.containsKey('firstLastName')) firstLastName = nuevosDatos['firstLastName'];
+    if (nuevosDatos.containsKey('secondLastName')) secondLastName = nuevosDatos['secondLastName'];
+    if (nuevosDatos.containsKey('gender')) gender = nuevosDatos['gender'];
+    if (nuevosDatos.containsKey('bloodGroup')) bloodGroup = nuevosDatos['bloodGroup'];
+    if (nuevosDatos.containsKey('birthdate')) birthdate = nuevosDatos['birthdate'];
+    if (nuevosDatos.containsKey('isActive')) isActive = nuevosDatos['isActive'];
+    if (nuevosDatos.containsKey('NSS')) NSS = nuevosDatos['NSS'];
+    if (nuevosDatos.containsKey('tipoSeguro')) tipoSeguro = nuevosDatos['tipoSeguro'];
+    if (nuevosDatos.containsKey('estatusVida')) estatusVida = nuevosDatos['estatusVida'];
+    if (nuevosDatos.containsKey('fueTrabajador')) fueTrabajador = nuevosDatos['fueTrabajador'];
+    if (nuevosDatos.containsKey('estatusMedico')) estatusMedico = nuevosDatos['estatusMedico'];
+    if (nuevosDatos.containsKey('fechaRegistro')) fechaRegistro = nuevosDatos['fechaRegistro'];
+    if (nuevosDatos.containsKey('fechaUltimaCita')) fechaUltimaCita = nuevosDatos['fechaUltimaCita'];
+    print("Datos actualizados para el miembro $name $firstLastName.");
+  }
+
+  @override  
+  String toString() {
+    final String formatedFechaRegistro = "${fechaRegistro.day.toString().padLeft(2, '0')}/${fechaRegistro.month.toString().padLeft(2, '0')}/${fechaRegistro.year}";
+    final String formatedFechaUltimaCita = fechaUltimaCita != null
       ? "${fechaUltimaCita!.day.toString().padLeft(2, '0')}/${fechaUltimaCita!.month.toString().padLeft(2, '0')}/${fechaUltimaCita!.year}"
-      : "No registrada";
+      : "N/A";
 
     return """
     ------------------------------------------------------------
     DATOS DEL MIEMBRO
     ------------------------------------------------------------
-    ID: $ID
-    Nombre: $name $firstLastName ${secondLastName ?? ''}
-    Género: $gender
-    Grupo Sanguíneo: $bloodGroup
-    Fecha de Nacimiento: $formatedBirthDate
+    ${super.toString()}
     NSS: $NSS
     Tipo de Seguro: $tipoSeguro
     Estatus de Vida: $estatusVida
-    Empleado: $fueTrabajador
+    Fue Trabajador: $fueTrabajador
     Estatus Médico: $estatusMedico
     Fecha de Registro: $formatedFechaRegistro
-    Última Cita: $formatedFechaUltimaCita
-    Estatus: ${isActive ? "Activo" : "Inactivo"}
-    Fecha de Creación: $formatedCreatedDate
+    Fecha de Última Cita: $formatedFechaUltimaCita
     ------------------------------------------------------------
     """;
   }
 }
 
 void main() {
-  // Casos de prueba 1
+  // Caso de prueba 1
   print("CASO DE PRUEBA 1");
   final nuevoMiembro = Miembro(
-      NSS: "123456789",
-      tipoSeguro: "IMSS",
-      estatusVida: "Vivo",
-      fueTrabajador: "No", 
-      estatusMedico: "Sano",
-      fechaRegistro: DateTime.now(),
-      ID: 1,
-      name: "Carlos",
-      firstLastName: "García",
-      secondLastName: "López",
-      gender: "Hombre",
-      bloodGroup: "A+",
-      birthdate: DateTime(1990, 05, 12)
+    NSS: "123456789",
+    tipoSeguro: "IMSS",
+    estatusVida: "Vivo",
+    fueTrabajador: "No", 
+    estatusMedico: "Sano",
+    fechaRegistro: DateTime.now(),
+    ID: 1,
+    name: "Carlos",
+    firstLastName: "García",
+    secondLastName: "López",
+    gender: "Hombre",
+    bloodGroup: "A+",
+    birthdate: DateTime(1990, 05, 12)
   );
   print(nuevoMiembro);
   
-  // Casos de prueba 2
+  // Caso de prueba 2
   print("CASO DE PRUEBA 2");
   final trabajador = Miembro(
-      NSS: "987654321",
-      tipoSeguro: "ISSSTE",
-      estatusVida: "Retirado",
-      fueTrabajador: "Fue trabajador", 
-      estatusMedico: "Sano",
-      fechaRegistro: DateTime(2020, 07, 15),
-      fechaUltimaCita: DateTime(2023, 10, 05),
-      ID: 2,
-      name: "Ana",
-      firstLastName: "Martínez",
-      secondLastName: "Sánchez",
-      gender: "Mujer",
-      bloodGroup: "O-",
-      birthdate: DateTime(1975, 03, 10)
+    NSS: "987654321",
+    tipoSeguro: "ISSSTE",
+    estatusVida: "Retirado",
+    fueTrabajador: "Sí", 
+    estatusMedico: "Sano",
+    fechaRegistro: DateTime(2020, 07, 15),
+    fechaUltimaCita: DateTime(2023, 10, 05),
+    ID: 2,
+    name: "Ana",
+    firstLastName: "Martínez",
+    secondLastName: "Sánchez",
+    gender: "Mujer",
+    bloodGroup: "O-",
+    birthdate: DateTime(1975, 03, 10)
   );
   print(trabajador);
 
-  // Casos de prueba 3
+  // Caso de prueba 3
   print("CASO DE PRUEBA 3 - Inicial");
   final miembro = Miembro(
       NSS: "1122334455",
@@ -249,30 +219,20 @@ void main() {
   );
   print(miembro);
 
-  // Actualización de datos
+  // Caso de prueba 3 - Actualización de datos
   print("\nCASO DE PRUEBA 3 - Actualización");
-  miembro.actualizaDatos(
-    nuevoID: 3,
-    nuevaCortesyTitle: "Sr.",
-    nuevoName: "Maria",
-    nuevoFirstLastName: "Hernández",
-    nuevoSecondLastName: "Pérez",
-    nuevoGender: "Mujer",
-    nuevoBloodGroup: "A+",
-    nuevoBirthdate: DateTime(1985, 12, 05),
-    nuevoIsActive: true,
-    nuevoFechaRegistro: DateTime(2021, 01, 22),
-    nuevaFechaUltimaCita: DateTime(2024, 10, 12),
-    nuevoNSS: "9988776655",
-    nuevoTipoSeguro: "IMSS",
-    nuevoEstatusVida: "Vivo",
-    nuevoFueTrabajador: "No",
-    nuevoEstatusMedico: "Sano"
-  );
-  print(miembro);
+  nuevoMiembro.actualizaDatos({
+    'name': 'Maria',
+    'firstLastName': 'Hernández',
+    'gender': 'Mujer',
+    'NSS': '987654321',
+    'tipoSeguro': 'ISSSTE',
+    'fechaUltimaCita': DateTime(2024, 10, 15),
+  });
+  print(nuevoMiembro);
 
-  // Limpieza de datos (eliminar)
+  // Caso de prueba 3 - Limpieza de datos
   print("\nCASO DE PRUEBA 3 - Limpieza");
-  miembro.limpiaDatos();
-  print(miembro);
+  nuevoMiembro.limpiaDatos();
+  print(nuevoMiembro);
 }
